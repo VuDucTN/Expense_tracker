@@ -6,7 +6,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 
 const routes = require("./routes/index");
-const connectDB = require("./config/db");
+const connectDB = require("./config/mongoDB/db");
 
 require("dotenv").config();
 

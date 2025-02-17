@@ -1,7 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const fastCsv = require("fast-csv");
-const { parse, isValid, format } = require("date-fns");
+const { format } = require("date-fns");
 
 const Transaction = require("../models/Transaction");
 const User = require("../models/User");
@@ -12,6 +11,7 @@ const {
   getMonthlyExpense,
   getTotalExpense,
 } = require("../services/expenseService");
+const processDate = require("../utils/dateUtils");
 
 exports.addTransaction = async (req, res) => {
   try {
@@ -26,21 +26,19 @@ exports.addTransaction = async (req, res) => {
     const trimmedDescription = description.trim();
     const trimmedDate = date.trim();
 
-    const parsedDate = parse(trimmedDate, "yyyy-MM-dd", new Date());
+    const formatDate = processDate(trimmedDate);
 
-    if (!isValid(parsedDate))
+    if (!formatDate)
       return res
         .status(400)
         .json({ message: "Invalid date format! Use YYYY-MM-DD" });
-
-    const formattedDate = format(parsedDate, "yyyy-MM-dd");
 
     const transaction = await Transaction.create({
       user: req.user.id,
       category: trimmedCategory,
       amount,
       description: trimmedDescription,
-      date: formattedDate,
+      date: formatDate,
     });
 
     res
@@ -70,14 +68,12 @@ exports.updateTransaction = async (req, res) => {
     const trimmedDescription = description?.trim() || transaction.description;
     const trimmedDate = date?.trim() || format(transaction.date, "yyyy-MM-dd");
 
-    const parsedDate = parse(trimmedDate, "yyyy-MM-dd", new Date());
+    const formatDate = processDate(trimmedDate);
 
-    if (!isValid(parsedDate))
+    if (!formatDate)
       return res
         .status(400)
         .json({ message: "Invalid date format! Use YYYY-MM-DD" });
-
-    const formattedDate = format(parsedDate, "yyyy-MM-dd");
 
     const UpdateTransaction = await Transaction.findByIdAndUpdate(
       id,
@@ -85,7 +81,7 @@ exports.updateTransaction = async (req, res) => {
         category: trimmedCategory,
         amount: amount || transaction.amount,
         description: trimmedDescription,
-        date: formattedDate,
+        date: formatDate,
       },
       { new: true }
     );
