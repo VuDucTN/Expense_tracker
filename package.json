@@ -16,9 +16,12 @@
     "connect-mongo": "^5.1.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
+    "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
+    "exceljs": "^4.4.0",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
+    "fast-csv": "^5.0.2",
     "mongoose": "^8.10.0",
     "morgan": "^1.10.0"
   },
