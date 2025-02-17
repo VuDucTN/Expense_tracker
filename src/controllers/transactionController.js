@@ -6,8 +6,8 @@ const { parse, isValid, format } = require("date-fns");
 const Transaction = require("../models/Transaction");
 const User = require("../models/User");
 
-const exportExcel = require("../utils/excelExport");
-const exportCsv = require("../utils/csvExport");
+const exportExcel = require("../utils/exports/excelExport");
+const exportCsv = require("../utils/exports/csvExport");
 const {
   getMonthlyExpense,
   getTotalExpense,
